@@ -1,0 +1,43 @@
+spring:
+  profiles:
+    active: default 
+  application:
+    name: apigateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: false
+      actuator:
+        enabled: true
+      routes:
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/user/**
+        - id: restaurant-service
+          uri: lb://restaurant-service
+          predicates:
+            - Path=/restaurant/**
+        - id: order-service
+          uri: lb://order-service
+          predicates:
+            - Path=/order/**
+        - id: delivery-service
+          uri: lb://delivery-service
+          predicates:
+            - Path=/delivery/**
+    loadbalancer:
+      instances:
+        user-service:
+          - localhost:8081
+          - localhost:8085
+        restaurant-service:
+          - localhost:8082
+          - localhost:8086
+        order-service:
+          - localhost:8083
+          - localhost:8087
+        delivery-service:
+          - localhost:8090
+          - localhost:8091
